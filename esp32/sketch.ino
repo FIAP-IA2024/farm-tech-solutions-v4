@@ -6,60 +6,96 @@
 #define BUTTON_K 22 // Pin for the K button
 #define LDRPIN 14   // Pin for the LDR (pH sensor)
 #define RELAYPIN 27 // Pin for the Relay
+#define LED_P 17    // Pin for the LED indicating sensor P
+#define LED_K 16    // Pin for the LED indicating sensor K
 
 // Defining the sensor type
 #define DHTTYPE DHT22
 
 DHT dht(DHTPIN, DHTTYPE);
 
+bool sensorP = false;
+bool sensorK = false;
+
+unsigned long lastDebounceTimeP = 0;
+unsigned long lastDebounceTimeK = 0;
+unsigned long debounceDelay = 200;
+
+unsigned long lastReadTime = 0;
+unsigned long readInterval = 2000;
+
 void setup() {
   Serial.begin(115200); // Initialize serial communication
   dht.begin(); // Initialize the DHT22
+  
   pinMode(BUTTON_P, INPUT_PULLUP); // Set the P button as input
   pinMode(BUTTON_K, INPUT_PULLUP); // Set the K button as input
   pinMode(RELAYPIN, OUTPUT); // Set the relay pin as output
+  pinMode(LED_P, OUTPUT); // Set the LED for sensor P as output
+  pinMode(LED_K, OUTPUT); // Set the LED for sensor K as output
+
   digitalWrite(RELAYPIN, LOW); // Ensure the relay is off at startup
+  digitalWrite(LED_P, LOW); // Ensure the LED for sensor P is off at startup
+  digitalWrite(LED_K, LOW); // Ensure the LED for sensor K is off at startup
 }
 
 void loop() {
-  // Wait 2 seconds between readings
-  delay(2000);
+  unsigned long currentTime = millis();
 
-  // Read humidity
-  float humidity = dht.readHumidity();
-  // Read temperature
-  float temperature = dht.readTemperature();
-  // Read the LDR value (pH simulation)
-  int ldrValue = analogRead(LDRPIN); // Read the LDR value
+  // Read sensors every readInterval milliseconds
+  if (currentTime - lastReadTime >= readInterval) {
+    lastReadTime = currentTime;
 
-  // Check if the reading failed and exit the loop if necessary
-  if (isnan(humidity) || isnan(temperature)) {
-    Serial.println("Failed to read from DHT!");
-    return;
+    // Read humidity
+    float humidity = dht.readHumidity();
+    // Read temperature
+    float temperature = dht.readTemperature();
+    // Read the LDR value (pH simulation)
+    int ldrValue = analogRead(LDRPIN); // Read the LDR value
+
+    // Check if the reading failed and exit the loop if necessary
+    if (isnan(humidity) || isnan(temperature)) {
+      Serial.println("Failed to read from DHT!");
+      return;
+    }
+
+    // Logic for controlling the relay (irrigation)
+    if (humidity < 40 && sensorP && sensorK) {
+      digitalWrite(RELAYPIN, HIGH); // Turn on the relay
+      Serial.println("Irrigation ON");
+    } else {
+      digitalWrite(RELAYPIN, LOW); // Turn off the relay
+      Serial.println("Irrigation OFF");
+    }
+
+    // Display the readings on the Serial Monitor
+    Serial.print("Humidity: ");
+    Serial.println(humidity);
+    Serial.print("Temperature: ");
+    Serial.println(temperature);
+    Serial.print("LDR (pH) Value: ");
+    Serial.println(ldrValue); // Display the LDR value
+    Serial.print("Sensor P: ");
+    Serial.println(sensorP ? "Active" : "Inactive");
+    Serial.print("Sensor K: ");
+    Serial.println(sensorK ? "Active" : "Inactive");
   }
 
-  // Read the state of the buttons
-  bool sensorP = digitalRead(BUTTON_P) == LOW; // Button pressed
-  bool sensorK = digitalRead(BUTTON_K) == LOW; // Button pressed
+  // Debounce and toggle sensor states when the button is pressed
+  debounceButton(BUTTON_P, sensorP, lastDebounceTimeP);
+  debounceButton(BUTTON_K, sensorK, lastDebounceTimeK);
 
-  // Logic for controlling the relay (irrigation)
-  if (humidity < 40 && sensorP && sensorK) {
-    digitalWrite(RELAYPIN, HIGH); // Turn on the relay
-    Serial.println("Irrigation ON");
-  } else {
-    digitalWrite(RELAYPIN, LOW); // Turn off the relay
-    Serial.println("Irrigation OFF");
+  // Control LEDs based on sensor states
+  digitalWrite(LED_P, sensorP ? HIGH : LOW); // Turn LED on or off for sensor P
+  digitalWrite(LED_K, sensorK ? HIGH : LOW); // Turn LED on or off for sensor K
+}
+
+void debounceButton(int buttonPin, bool &sensorState, unsigned long &lastDebounceTime) {
+  int reading = digitalRead(buttonPin);
+  if (reading == LOW) {
+    if ((millis() - lastDebounceTime) > debounceDelay) {
+      sensorState = !sensorState;
+      lastDebounceTime = millis();
+    }
   }
-
-  // Display the readings on the Serial Monitor
-  Serial.print("Humidity: ");
-  Serial.println(humidity);
-  Serial.print("Temperature: ");
-  Serial.println(temperature);
-  Serial.print("LDR (pH) Value: ");
-  Serial.println(ldrValue); // Display the LDR value
-  Serial.print("Sensor P: ");
-  Serial.println(sensorP ? "Active" : "Inactive");
-  Serial.print("Sensor K: ");
-  Serial.println(sensorK ? "Active" : "Inactive");
 }
