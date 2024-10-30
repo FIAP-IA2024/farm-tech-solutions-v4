@@ -18,34 +18,33 @@
       "left": 124.8,
       "attrs": { "color": "green" }
     },
-    { "type": "wokwi-dht22", "id": "dht1", "top": -38.1, "left": -63, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -38.1, "left": -111, "attrs": {} },
     {
       "type": "wokwi-photoresistor-sensor",
       "id": "ldr1",
       "top": -0.3,
-      "left": -197.5,
+      "left": -235.9,
       "rotate": 90,
       "attrs": {}
-    }
+    },
+    { "type": "wokwi-relay-module", "id": "relay1", "top": -67, "left": -19.2, "attrs": {} }
   ],
   "connections": [
     [ "esp:TX", "$serialMonitor:RX", "", [] ],
     [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    
     [ "btn1:1.l", "esp:GND.2", "black", [ "h-9.6", "v-48" ] ],
     [ "btn1:2.l", "esp:22", "green", [ "h-9.6", "v-47.8" ] ],
-    
     [ "btn2:1.l", "esp:GND.2", "black", [ "h-19.2" ] ],
     [ "btn2:2.l", "esp:23", "green", [ "v-9.4", "h-24.04" ] ],
-
-    
     [ "dht1:VCC", "esp:3V3", "red", [ "v0" ] ],
     [ "dht1:GND", "esp:GND.1", "black", [ "v0" ] ],
     [ "dht1:SDA", "esp:12", "green", [ "v0" ] ],
-    
     [ "ldr1:VCC", "esp:3V3", "red", [ "v0" ] ],
     [ "ldr1:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "ldr1:AO", "esp:14", "green", [ "v0" ] ]
+    [ "ldr1:AO", "esp:14", "green", [ "v0" ] ],
+    [ "relay1:VCC", "esp:3V3", "red", [ "h-19.2", "v48", "h43.01" ] ],
+    [ "relay1:GND", "esp:GND.1", "black", [ "h-9.6", "v191.6" ] ],
+    [ "relay1:IN", "esp:27", "green", [ "v86.2", "h23.81" ] ]
   ],
   "dependencies": {}
 }

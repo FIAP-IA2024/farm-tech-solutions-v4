@@ -5,6 +5,7 @@
 #define BUTTON_P 23 // Pin for the P button
 #define BUTTON_K 22 // Pin for the K button
 #define LDRPIN 14   // Pin for the LDR (pH sensor)
+#define RELAYPIN 27 // Pin for the Relay
 
 // Defining the sensor type
 #define DHTTYPE DHT22
@@ -16,6 +17,8 @@ void setup() {
   dht.begin(); // Initialize the DHT22
   pinMode(BUTTON_P, INPUT_PULLUP); // Set the P button as input
   pinMode(BUTTON_K, INPUT_PULLUP); // Set the K button as input
+  pinMode(RELAYPIN, OUTPUT); // Set the relay pin as output
+  digitalWrite(RELAYPIN, LOW); // Ensure the relay is off at startup
 }
 
 void loop() {
@@ -38,6 +41,15 @@ void loop() {
   // Read the state of the buttons
   bool sensorP = digitalRead(BUTTON_P) == LOW; // Button pressed
   bool sensorK = digitalRead(BUTTON_K) == LOW; // Button pressed
+
+  // Logic for controlling the relay (irrigation)
+  if (humidity < 40 && sensorP && sensorK) {
+    digitalWrite(RELAYPIN, HIGH); // Turn on the relay
+    Serial.println("Irrigation ON");
+  } else {
+    digitalWrite(RELAYPIN, LOW); // Turn off the relay
+    Serial.println("Irrigation OFF");
+  }
 
   // Display the readings on the Serial Monitor
   Serial.print("Humidity: ");
