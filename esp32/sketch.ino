@@ -4,6 +4,7 @@
 #define DHTPIN 12  // Pin for the DHT22
 #define BUTTON_P 23 // Pin for the P button
 #define BUTTON_K 22 // Pin for the K button
+#define LDRPIN 14   // Pin for the LDR (pH sensor)
 
 // Defining the sensor type
 #define DHTTYPE DHT22
@@ -25,6 +26,8 @@ void loop() {
   float humidity = dht.readHumidity();
   // Read temperature
   float temperature = dht.readTemperature();
+  // Read the LDR value (pH simulation)
+  int ldrValue = analogRead(LDRPIN); // Read the LDR value
 
   // Check if the reading failed and exit the loop if necessary
   if (isnan(humidity) || isnan(temperature)) {
@@ -41,6 +44,8 @@ void loop() {
   Serial.println(humidity);
   Serial.print("Temperature: ");
   Serial.println(temperature);
+  Serial.print("LDR (pH) Value: ");
+  Serial.println(ldrValue); // Display the LDR value
   Serial.print("Sensor P: ");
   Serial.println(sensorP ? "Active" : "Inactive");
   Serial.print("Sensor K: ");
