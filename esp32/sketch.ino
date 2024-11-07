@@ -60,7 +60,7 @@ void loop() {
     }
 
     // Logic for controlling the relay (irrigation)
-    if (humidity < 40 && sensorP && sensorK) {
+    if (humidity < 40 && (sensorP || sensorK)) {
       digitalWrite(RELAYPIN, HIGH); // Turn on the relay
       Serial.println("Irrigation ON");
     } else {
