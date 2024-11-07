@@ -12,6 +12,9 @@
 // Defining the sensor type
 #define DHTTYPE DHT22
 
+// Thresholds
+const float HUMIDITY_THRESHOLD = 40.0; // Minimum humidity level to trigger irrigation
+
 DHT dht(DHTPIN, DHTTYPE);
 
 bool sensorP = false;
@@ -64,7 +67,7 @@ void loop()
     }
 
     // Logic for controlling the relay (irrigation)
-    if (humidity < 40 && (sensorP || sensorK))
+    if (humidity < HUMIDITY_THRESHOLD && (sensorP || sensorK))
     {
       digitalWrite(RELAYPIN, HIGH); // Turn on the relay
       Serial.println("Irrigation ON");
