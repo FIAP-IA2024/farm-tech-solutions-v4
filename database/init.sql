@@ -1,0 +1,11 @@
+CREATE TABLE
+  sensor_data (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    humidity REAL NOT NULL,
+    temperature REAL NOT NULL,
+    ph REAL NOT NULL,
+    sensor_p BOOLEAN NOT NULL DEFAULT 0,
+    sensor_k BOOLEAN NOT NULL DEFAULT 0,
+    irrigation_status BOOLEAN NOT NULL DEFAULT 0,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+  );
