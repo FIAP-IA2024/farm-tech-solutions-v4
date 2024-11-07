@@ -52,12 +52,10 @@ void loop()
   {
     lastReadTime = currentTime;
 
-    // Read humidity
+    // Read humidity, temperature and LDR value
     float humidity = dht.readHumidity();
-    // Read temperature
     float temperature = dht.readTemperature();
-    // Read the LDR value (pH simulation)
-    int ldrValue = analogRead(LDRPIN); // Read the LDR value
+    int ldrValue = analogRead(LDRPIN);
 
     // Check if the reading failed and exit the loop if necessary
     if (isnan(humidity) || isnan(temperature))
@@ -89,6 +87,7 @@ void loop()
     Serial.println(sensorP ? "Active" : "Inactive");
     Serial.print("Sensor K: ");
     Serial.println(sensorK ? "Active" : "Inactive");
+    Serial.println();
   }
 
   // Debounce and toggle sensor states when the button is pressed
@@ -96,8 +95,8 @@ void loop()
   debounceButton(BUTTON_K, sensorK, lastDebounceTimeK);
 
   // Control LEDs based on sensor states
-  digitalWrite(LED_P, sensorP ? HIGH : LOW); // Turn LED on or off for sensor P
-  digitalWrite(LED_K, sensorK ? HIGH : LOW); // Turn LED on or off for sensor K
+  digitalWrite(LED_P, sensorP ? HIGH : LOW);
+  digitalWrite(LED_K, sensorK ? HIGH : LOW);
 }
 
 void debounceButton(int buttonPin, bool &sensorState, unsigned long &lastDebounceTime)

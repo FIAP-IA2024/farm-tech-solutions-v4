@@ -3,7 +3,13 @@
   "author": "Gabriel Ribeiro",
   "editor": "wokwi",
   "parts": [
-    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {}
+    },
     {
       "type": "wokwi-pushbutton",
       "id": "btn1",
@@ -18,7 +24,13 @@
       "left": 124.8,
       "attrs": { "color": "blue" }
     },
-    { "type": "wokwi-dht22", "id": "dht1", "top": -38.1, "left": -111, "attrs": {} },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -38.1,
+      "left": -111,
+      "attrs": { "humidity": "33.5" }
+    },
     {
       "type": "wokwi-photoresistor-sensor",
       "id": "ldr1",
@@ -27,7 +39,13 @@
       "rotate": 90,
       "attrs": {}
     },
-    { "type": "wokwi-relay-module", "id": "relay1", "top": -67, "left": -19.2, "attrs": {} },
+    {
+      "type": "wokwi-relay-module",
+      "id": "relay1",
+      "top": -67,
+      "left": -19.2,
+      "attrs": {}
+    },
     {
       "type": "wokwi-led",
       "id": "led1",
@@ -57,30 +75,48 @@
       "left": 189,
       "rotate": 90,
       "attrs": { "color": "yellow", "flip": "1" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led3",
+      "top": -99.6,
+      "left": 177,
+      "attrs": { "color": "green", "flip": "1" }
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r3",
+      "top": -34.45,
+      "left": 124.8,
+      "attrs": { "value": "220" }
     }
   ],
   "connections": [
-    [ "esp:TX", "$serialMonitor:RX", "", [] ],
-    [ "esp:RX", "$serialMonitor:TX", "", [] ],
-    [ "btn1:1.l", "esp:GND.2", "black", [ "h-9.6", "v-48" ] ],
-    [ "btn1:2.l", "esp:22", "green", [ "h-9.6", "v-47.8" ] ],
-    [ "btn2:1.l", "esp:GND.2", "black", [ "h-19.2", "v28.8" ] ],
-    [ "btn2:2.l", "esp:23", "green", [ "v0.2", "h-19.2", "v19.2" ] ],
-    [ "dht1:VCC", "esp:3V3", "red", [ "v0" ] ],
-    [ "dht1:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "dht1:SDA", "esp:12", "green", [ "v0" ] ],
-    [ "ldr1:VCC", "esp:3V3", "red", [ "v0" ] ],
-    [ "ldr1:GND", "esp:GND.1", "black", [ "v0" ] ],
-    [ "ldr1:AO", "esp:14", "green", [ "v0" ] ],
-    [ "relay1:VCC", "esp:3V3", "red", [ "h-19.2", "v48", "h43.01" ] ],
-    [ "relay1:GND", "esp:GND.1", "black", [ "h-9.6", "v191.6" ] ],
-    [ "relay1:IN", "esp:27", "green", [ "v86.2", "h23.81" ] ],
-    [ "r1:1", "esp:GND.3", "black", [ "h-9.6", "v-38.4" ] ],
-    [ "led1:C", "r1:2", "black", [ "h0" ] ],
-    [ "led1:A", "esp:17", "green", [ "h0" ] ],
-    [ "led2:A", "esp:16", "green", [ "h-86.4", "v-9.2" ] ],
-    [ "r2:1", "esp:GND.3", "black", [ "h-9.6", "v-67.2" ] ],
-    [ "r2:2", "led2:C", "black", [ "v0" ] ]
+    ["esp:TX", "$serialMonitor:RX", "", []],
+    ["esp:RX", "$serialMonitor:TX", "", []],
+    ["btn1:1.l", "esp:GND.2", "black", ["h-9.6", "v-48"]],
+    ["btn1:2.l", "esp:22", "green", ["h-9.6", "v-47.8"]],
+    ["btn2:1.l", "esp:GND.2", "black", ["h-19.2", "v28.8"]],
+    ["btn2:2.l", "esp:23", "green", ["v0.2", "h-19.2", "v19.2"]],
+    ["dht1:VCC", "esp:3V3", "red", ["v0"]],
+    ["dht1:GND", "esp:GND.1", "black", ["v0"]],
+    ["dht1:SDA", "esp:12", "green", ["v0"]],
+    ["ldr1:VCC", "esp:3V3", "red", ["v0"]],
+    ["ldr1:GND", "esp:GND.1", "black", ["v0"]],
+    ["ldr1:AO", "esp:14", "green", ["v0"]],
+    ["relay1:VCC", "esp:3V3", "red", ["h-19.2", "v48", "h43.01"]],
+    ["relay1:GND", "esp:GND.1", "black", ["h-9.6", "v191.6"]],
+    ["relay1:IN", "esp:27", "green", ["v86.2", "h23.81"]],
+    ["r1:1", "esp:GND.3", "black", ["h-9.6", "v-38.4"]],
+    ["led1:C", "r1:2", "black", ["h0"]],
+    ["led1:A", "esp:17", "green", ["h0"]],
+    ["led2:A", "esp:16", "green", ["h-86.4", "v-9.2"]],
+    ["r2:1", "esp:GND.3", "black", ["h-9.6", "v-67.2"]],
+    ["r2:2", "led2:C", "black", ["v0"]],
+    ["led3:C", "esp:GND.3", "black", ["v0"]],
+    ["r3:2", "led3:A", "green", ["v0"]],
+    ["r3:1", "relay1:NO", "green", ["h-19.2", "v1.8"]],
+    ["relay1:COM", "esp:3V3", "red", ["h-18", "v37", "h-69.6", "v28.8"]]
   ],
   "dependencies": {}
 }
