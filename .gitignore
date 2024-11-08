@@ -3,3 +3,4 @@
 database/data.db
 
 app/__pycache__
+app/venv

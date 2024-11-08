@@ -1,4 +1,5 @@
 import sqlite3
+import pandas
 import os
 
 DB_PATH = "./database/data.db"
@@ -42,10 +43,11 @@ def save_sensor_data(humidity, temperature, ph, sensor_p, sensor_k, irrigation_s
 
 
 def fetch_sensor_data():
-    connection = connect()
-    cursor = connection.cursor()
-    cursor.execute("SELECT * FROM sensor_data")
-    rows = cursor.fetchall()
+    connection = sqlite3.connect(DB_PATH)
+    query = "SELECT * FROM sensor_data ORDER BY created_at DESC"
+    data = pandas.read_sql_query(query, connection)
+    data["created_at"] = pandas.to_datetime(data["created_at"])
+    data["month"] = data["created_at"].dt.to_period("M")  # Adiciona uma coluna de mês
     connection.close()
 
-    return rows
+    return data
