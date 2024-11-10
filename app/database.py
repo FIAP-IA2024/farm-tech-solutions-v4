@@ -3,6 +3,7 @@ import pandas
 import os
 
 DB_PATH = "./database/data.db"
+CSV_PATH = "./database/sensor_data.csv"
 INIT_SQL_PATH = "./database/init.sql"
 DB_INITIALIZED = False
 
@@ -46,6 +47,10 @@ def fetch_sensor_data():
     connection = sqlite3.connect(DB_PATH)
     query = "SELECT * FROM sensor_data ORDER BY created_at DESC"
     data = pandas.read_sql_query(query, connection)
+
+    # Export the data to a CSV file
+    data.to_csv(CSV_PATH, index=False)
+
     data["created_at"] = pandas.to_datetime(data["created_at"])
     data["month"] = data["created_at"].dt.to_period("M")  # Adiciona uma coluna de mês
     connection.close()
