@@ -4,3 +4,5 @@ database/data.db
 
 app/__pycache__
 app/venv
+app/.env*
+!app/.env.example
