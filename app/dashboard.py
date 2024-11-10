@@ -3,14 +3,36 @@ import streamlit
 import seaborn
 import pandas
 from database import fetch_sensor_data
+from weather import get_weather_data
 
 streamlit.set_page_config(page_title="Farm Tech Solutions")
 streamlit.title("Farm Tech Solutions")
 streamlit.write(
     "Visualize os dados dos sensores e o status de irrigação ao longo do tempo, agregados por mês."
 )
+streamlit.markdown("---")
 
 data = fetch_sensor_data()
+
+# Weather Data
+city = streamlit.text_input(
+    "Digite o nome da cidade para buscar dados meteorológicos:", "Sao Paulo"
+)
+weather = get_weather_data(city)
+
+streamlit.subheader("Dados Meteorológicos")
+if weather:
+    col1, col2 = streamlit.columns(2)
+    with col1:
+        streamlit.metric("Temperatura (°C)", weather["temperature"])
+    with col2:
+        streamlit.metric("Umidade (%)", weather["humidity"])
+    streamlit.write(f"Descrição: {weather['description'].capitalize()}")
+else:
+    streamlit.write(
+        "Não foi possível obter os dados meteorológicos. Verifique o nome da cidade."
+    )
+streamlit.markdown("---")
 
 # Raw Sensor Data
 streamlit.subheader("Dados Brutos dos Sensores")
