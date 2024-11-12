@@ -48,7 +48,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
   - `database.py`: Scripts para realizar operações CRUD no banco de dados.
   - `weather.py`: Código para integração com API meteorológica.
   - `dashboard.py`: Dashboard para exibir os dados coletados.
-  - `.env.example`: Variáveis de ambiente para configuração segura.
+  - `.env`: Variáveis de ambiente para configuração segura (Copie o conteúdo do arquivo `.env.example` e cole em um novo arquivo chamado `.env`).
 
 - **`database`**: Contém o script SQL de inicialização do banco:
   - `init.sql`: Script para criação automática da estrutura do banco de dados.
