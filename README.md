@@ -33,7 +33,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 - Armazenamento dos dados coletados em um banco de dados SQL.
 - Interface em Python para consulta e análise dos dados históricos.
 - Dashboard em Python para visualização dos dados coletados.
-- (Opcional) Integração com API meteorológica e análises em R.
+- Integração com API meteorológica e análises em R.
 
 ---
 
@@ -48,7 +48,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
   - `database.py`: Scripts para realizar operações CRUD no banco de dados.
   - `weather.py`: Código para integração com API meteorológica.
   - `dashboard.py`: Dashboard para exibir os dados coletados.
-  - `.env` e `.env.example`: Variáveis de ambiente para configuração segura.
+  - `.env.example`: Variáveis de ambiente para configuração segura.
 
 - **`database`**: Contém o script SQL de inicialização do banco:
   - `init.sql`: Script para criação automática da estrutura do banco de dados.
