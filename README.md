@@ -59,27 +59,44 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 
 ---
 
-## 🔧 Como executar o código
+## 🔧 Como executar
 
-### 1. Configuração inicial
+### Configuração inicial
+
 1. Clone este repositório:
+
    ```bash
-   git clone <URL_DO_REPOSITORIO>
-   cd <NOME_DA_PASTA>
+   git clone git@github.com:FIAP-IA2024/farm-tech-solutions.git
+   cd farm-tech-solutions
    ```
 
-2. Configure as dependências Python:
+2. Crie e ative um ambiente virtual Python:
+   - **Linux/macOS:**
+
+     ```bash
+     python3 -m venv app/venv
+     source app/venv/bin/activate
+     ```
+
+   - **Windows:**
+
+     ```cmd
+     python -m venv venv
+     venv\Scripts\activate
+     ```
+
+3. Instale as dependências Python:
+
    ```bash
-   cd app
-   pip install -r requirements.txt
+   pip install -r app/requirements.txt
    ```
 
-3. Inicie o banco de dados:
+4. Inicie o banco de dados:
    O banco de dados será iniciado automaticamente na primeira execução do código Python.
 
 ---
 
-## 🤖 Executar o ESP32 no Wokwi
+### 🤖 Executar o ESP32 no Wokwi
 
 1. Acesse o site [Wokwi](https://wokwi.com/).
 2. Importe o diagrama do circuito:
@@ -96,28 +113,25 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 
 ---
 
-## 📊 Executar o Dashboard
+### 📊 Executar o Dashboard
 
 O dashboard é desenvolvido em **Streamlit**. Para executá-lo:
 
-1. Navegue até o diretório `app`:
+1. Execute o comando para iniciar o dashboard:
+
    ```bash
-   cd app
+   streamlit run app/dashboard.py
    ```
 
-2. Execute o comando para iniciar o dashboard:
-   ```bash
-   streamlit run dashboard.py
-   ```
+2. Acesse o dashboard no navegador em:
 
-3. Acesse o dashboard no navegador em:
-   ```
+   ```txt
    http://localhost:8501
    ```
 
 ---
 
-## 📈 Executar a Análise em R
+### 📈 Executar a Análise em R
 
 A análise estatística está localizada no arquivo `analysis/analysis.r`. Para executá-la:
 
@@ -125,13 +139,15 @@ A análise estatística está localizada no arquivo `analysis/analysis.r`. Para 
    - Utilize o arquivo `renv.lock` e a pasta `renv` para reprodutibilidade.
 
 2. Navegue até o diretório `analysis`:
+
    ```bash
    cd analysis
    ```
 
 3. Abra o arquivo `analysis.r` no RStudio ou execute-o no terminal:
-   ```R
-   source("analysis.r")
+
+   ```bash
+   Rscript ./analysis.r
    ```
 
 ---
