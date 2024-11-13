@@ -44,7 +44,7 @@ def save_sensor_data(humidity, temperature, ph, sensor_p, sensor_k, irrigation_s
 
 
 def fetch_sensor_data():
-    connection = sqlite3.connect(DB_PATH)
+    connection = connect()
     query = "SELECT * FROM sensor_data ORDER BY created_at DESC"
     data = pandas.read_sql_query(query, connection)
 
