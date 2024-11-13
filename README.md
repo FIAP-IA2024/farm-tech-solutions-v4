@@ -161,9 +161,9 @@ A análise estatística está localizada no arquivo `analysis/analysis.r`. Para 
 
 - **Software:**
   - Linguagem: Python, R, C/C++
-  - Frameworks: Streamlit, Renv
+  - Frameworks: Streamlit
   - Banco de dados: SQLite
-  - API: OpenWeather (opcional)
+  - API: OpenWeather
   - IDEs: Arduino IDE, RStudio
 
 ---
