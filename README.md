@@ -115,6 +115,12 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 6. Monitore os dados:
    - Use o **Serial Monitor** do Wokwi para visualizar as leituras dos sensores e o status do sistema.
 
+#### Projeto no Wokwi
+
+Acesse o projeto diretamente no Wokwi clicando no link abaixo:
+
+[🔗 Link Público Wokwi](https://wokwi.com/projects/414485053351612417)
+
 ---
 
 ### 📊 Executar o Dashboard
