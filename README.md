@@ -35,6 +35,8 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 - Dashboard em Python para visualização dos dados coletados.
 - Integração com API meteorológica e análises em R.
 
+### Demonstração no YouTube
+
 [![Assista no YouTube](https://img.youtube.com/vi/CJya8gYVt6g/0.jpg)](https://www.youtube.com/watch?v=CJya8gYVt6g)
 
 ---
