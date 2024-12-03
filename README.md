@@ -78,8 +78,8 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
    - **Linux/macOS:**
 
      ```bash
-     python3 -m venv app/venv
-     source app/venv/bin/activate
+     python3 -m venv venv
+     source venv/bin/activate
      ```
 
    - **Windows:**
@@ -92,7 +92,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 3. Instale as dependências Python:
 
    ```bash
-   pip install -r app/requirements.txt
+   pip install -r requirements.txt
    ```
 
 4. Inicie o banco de dados:
