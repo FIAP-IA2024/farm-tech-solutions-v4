@@ -3,7 +3,7 @@ import json
 import random
 import time
 from datetime import datetime
-from database import save_event
+from database import save_sensor_data
 
 BROKER = "test.mosquitto.org"
 TOPIC = "home/events"
@@ -11,37 +11,16 @@ CONNECTED = False
 PORT = 1883
 
 
-def generate_random_event():
-    device_id = random.randint(1, 5)
-    event_type = random.choice(["state-change", "sensor-reading", "energy-consumption"])
-    timestamp = datetime.utcnow().strftime(
-        "%Y-%m-%dT%H:%M:%SZ"
-    )  # Timestamp in UTC format
-
-    if event_type == "state-change":
-        return {
-            "device_id": device_id,
-            "type": event_type,
-            "timestamp": timestamp,
-            "value": random.choice(["on", "off"]),
-            "numeric_value": None,  # No numeric value for state-change
-        }
-    elif event_type == "sensor-reading":
-        return {
-            "device_id": device_id,
-            "type": event_type,
-            "timestamp": timestamp,
-            "value": random.choice(["motion detected", "250 lux", "no motion"]),
-            "numeric_value": None,  # No numeric value for sensor readings
-        }
-    elif event_type == "energy-consumption":
-        return {
-            "device_id": device_id,
-            "type": event_type,
-            "timestamp": timestamp,
-            "value": None,  # No string value for energy consumption
-            "numeric_value": round(random.uniform(0.01, 5.0), 3),
-        }
+def generate_fake_data():
+    return {
+        "ltr_UMIDADE": round(random.uniform(28.9, 55.2), 2),
+        "ltr_TEMPERATURA": round(random.uniform(7, 38.3), 2),
+        "ltr_PH": round(random.uniform(6.3, 7.3), 2),
+        "ltr_NUTRIENTE_P": random.choice([0, 1]),
+        "ltr_NUTRIENTE_K": random.choice([0, 1]),
+        "ltr_STATUS_IRRIGACAO": random.choice([0, 1]),
+        "ltr_DATA": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S"),
+    }
 
 
 def on_connect(client, userdata, flags, rc):
@@ -51,6 +30,27 @@ def on_connect(client, userdata, flags, rc):
         print(f"Connected to MQTT Broker: {BROKER}")
     else:
         print(f"Failed to connect, return code {rc}")
+
+
+def on_message(client, userdata, msg):
+    try:
+        payload = json.loads(msg.payload.decode("utf-8"))
+        humidity = payload["ltr_UMIDADE"]
+        temperature = payload["ltr_TEMPERATURA"]
+        ph = payload["ltr_PH"]
+        nutrient_p = payload["ltr_NUTRIENTE_P"]
+        nutrient_k = payload["ltr_NUTRIENTE_K"]
+        irrigation_status = payload["ltr_STATUS_IRRIGACAO"]
+
+        save_sensor_data(
+            humidity, temperature, ph, nutrient_p, nutrient_k, irrigation_status
+        )
+        print(f"Data received and saved: {payload}")
+
+    except KeyError as e:
+        print(f"Missing field in payload: {e}")
+    except Exception as e:
+        print(f"Error processing message: {e}")
 
 
 def main():
@@ -68,29 +68,14 @@ def main():
             time.sleep(1)
 
         while True:
-            event = generate_random_event()
-            payload = json.dumps(event)
+            fake_data = generate_fake_data()
+            client.publish(TOPIC, json.dumps(fake_data))
+            print(f"Published fake data: {fake_data}")
+            time.sleep(10)
 
-            # Publish event to MQTT Broker
-            client.publish(TOPIC, payload)
-            print(f"Published: {payload}")
-
-            # Save event to database
-            save_event(
-                device_id=event["device_id"],
-                event_type=event["type"],
-                value=event.get("value"),
-                numeric_value=event.get("numeric_value"),
-            )
-
-            print("Event saved to database.")
-
-            # Wait for 1 seconds before generating the next event
-            time.sleep(1)
     except KeyboardInterrupt:
-        print("Exiting...")
+        print("Disconnected!")
         client.loop_stop()
-        client.disconnect()
 
 
 if __name__ == "__main__":
