@@ -48,7 +48,7 @@ monthly_humidity_chart = go.Figure()
 monthly_humidity_chart.add_trace(
     go.Scatter(
         x=monthly_data["month"].astype(str),
-        y=monthly_data["humidity"],
+        y=monthly_data["ltr_UMIDADE"],
         mode="markers+lines",
         marker=dict(symbol="circle", size=8),
     )
@@ -67,7 +67,7 @@ monthly_ph_chart = go.Figure()
 monthly_ph_chart.add_trace(
     go.Scatter(
         x=monthly_data["month"].astype(str),
-        y=monthly_data["ph"],
+        y=monthly_data["ltr_PH"],
         mode="markers+lines",
         marker=dict(symbol="circle", size=8, color="orange"),
     )
@@ -88,7 +88,7 @@ monthly_irrigation_status_chart = go.Figure()
 monthly_irrigation_status_chart.add_trace(
     go.Scatter(
         x=monthly_data["month"].astype(str),
-        y=monthly_data["irrigation_status"],
+        y=monthly_data["ltr_STATUS_IRRIGACAO"],
         mode="markers+lines",
         marker=dict(symbol="circle", size=8, color="green"),
     )
@@ -110,10 +110,10 @@ streamlit.write(
 )
 humidity_distribution_chart = px.histogram(
     data,
-    x="humidity",
+    x="ltr_UMIDADE",
     nbins=30,
     title="Distribuição de Umidade",
-    labels={"humidity": "Umidade (%)"},
+    labels={"ltr_UMIDADE": "Umidade (%)"},
     marginal="box",
     color_discrete_sequence=["skyblue"],
 )
@@ -121,10 +121,10 @@ humidity_distribution_chart.update_traces(marker=dict(line=dict(width=1, color="
 streamlit.plotly_chart(humidity_distribution_chart)
 ph_distribution_chart = px.histogram(
     data,
-    x="ph",
+    x="ltr_PH",
     nbins=30,
     title="Distribuição de pH",
-    labels={"ph": "pH"},
+    labels={"ltr_PH": "pH"},
     marginal="box",
     color_discrete_sequence=["orange"],
 )
@@ -132,10 +132,10 @@ ph_distribution_chart.update_traces(marker=dict(line=dict(width=1, color="orange
 streamlit.plotly_chart(ph_distribution_chart)
 temperature_distribution_chart = px.histogram(
     data,
-    x="temperature",
+    x="ltr_TEMPERATURA",
     nbins=30,
     title="Distribuição de Temperatura",
-    labels={"temperature": "Temperatura (°C)"},
+    labels={"ltr_TEMPERATURA": "Temperatura (°C)"},
     marginal="box",
     color_discrete_sequence=["red"],
 )
@@ -152,9 +152,31 @@ streamlit.write(
 )
 correlation_matrix_chart = go.Figure(
     data=go.Heatmap(
-        z=data[["humidity", "temperature", "ph", "sensor_p", "sensor_k"]].corr().values,
-        x=["humidity", "temperature", "ph", "sensor_p", "sensor_k"],
-        y=["humidity", "temperature", "ph", "sensor_p", "sensor_k"],
+        z=data[
+            [
+                "ltr_UMIDADE",
+                "ltr_TEMPERATURA",
+                "ltr_PH",
+                "ltr_NUTRIENTE_P",
+                "ltr_NUTRIENTE_K",
+            ]
+        ]
+        .corr()
+        .values,
+        x=[
+            "ltr_UMIDADE",
+            "ltr_TEMPERATURA",
+            "ltr_PH",
+            "ltr_NUTRIENTE_P",
+            "ltr_NUTRIENTE_K",
+        ],
+        y=[
+            "ltr_UMIDADE",
+            "ltr_TEMPERATURA",
+            "ltr_PH",
+            "ltr_NUTRIENTE_P",
+            "ltr_NUTRIENTE_K",
+        ],
         colorscale="RdBu",  # Tente usar "RdBu" como alternativa, ou qualquer outra escala válida
         colorbar=dict(title="Correlação"),
         zmin=-1,
@@ -172,7 +194,9 @@ streamlit.subheader("Contagem Mensal de Ativação da Irrigação")
 streamlit.write(
     "Quantas vezes por mês a irrigação foi ativada. Isso ajuda a entender o consumo de água ao longo do tempo."
 )
-monthly_activation_count = data[data["irrigation_status"] == 1].groupby("month").size()
+monthly_activation_count = (
+    data[data["ltr_STATUS_IRRIGACAO"] == 1].groupby("month").size()
+)
 monthly_activation_count.index = monthly_activation_count.index.astype(str)
 monthly_irrigation_activation_chart = go.Figure()
 monthly_irrigation_activation_chart.add_trace(
@@ -195,12 +219,12 @@ streamlit.subheader("Tendência de Mudança de Umidade e Temperatura ao Longo do
 streamlit.write(
     "Linhas de tendência para observar como os níveis de umidade e temperatura mudam ao longo do ano."
 )
-data["created_at"] = pd.to_datetime(data["created_at"])
+data["ltr_DATA"] = pd.to_datetime(data["ltr_DATA"])
 time_trend_chart = go.Figure()
 time_trend_chart.add_trace(
     go.Scatter(
-        x=data["created_at"],
-        y=data["humidity"],
+        x=data["ltr_DATA"],
+        y=data["ltr_UMIDADE"],
         mode="lines",
         name="Umidade",
         line=dict(color="blue"),
@@ -208,8 +232,8 @@ time_trend_chart.add_trace(
 )
 time_trend_chart.add_trace(
     go.Scatter(
-        x=data["created_at"],
-        y=data["temperature"],
+        x=data["ltr_DATA"],
+        y=data["ltr_TEMPERATURA"],
         mode="lines",
         name="Temperatura",
         line=dict(color="red"),
@@ -230,10 +254,10 @@ streamlit.write(
     "Comparação dos dias com e sem irrigação ativada ao longo do tempo para avaliar a eficiência no uso da água."
 )
 days_with_irrigation = (
-    data[data["irrigation_status"] == 1].groupby(data["created_at"].dt.date).size()
+    data[data["ltr_STATUS_IRRIGACAO"] == 1].groupby(data["ltr_DATA"].dt.date).size()
 )
 days_without_irrigation = (
-    data[data["irrigation_status"] == 0].groupby(data["created_at"].dt.date).size()
+    data[data["ltr_STATUS_IRRIGACAO"] == 0].groupby(data["ltr_DATA"].dt.date).size()
 )
 efficiency_df = pd.DataFrame(
     {
@@ -275,8 +299,8 @@ streamlit.write(
     "ajudando a monitorar a saúde das suas plantas."
 )
 
-ideal_humidity = data[(data["humidity"] >= 40) & (data["humidity"] <= 60)]
-ideal_ph = data[(data["ph"] >= 6.0) & (data["ph"] <= 7.5)]
+ideal_humidity = data[(data["ltr_UMIDADE"] >= 40) & (data["ltr_UMIDADE"] <= 60)]
+ideal_ph = data[(data["ltr_PH"] >= 6.0) & (data["ltr_PH"] <= 7.5)]
 
 streamlit.markdown("### Condições Ideais")
 col1, col2 = streamlit.columns(2)

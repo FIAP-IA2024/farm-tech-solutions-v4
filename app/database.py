@@ -3,7 +3,7 @@ import pandas
 import os
 
 DB_PATH = "./database/data.db"
-CSV_PATH = "./database/sensor_data.csv"
+CSV_PATH = "./database/tbl_LEITURA.csv"
 INIT_SQL_PATH = "./database/init.sql"
 DB_INITIALIZED = False
 
@@ -34,7 +34,7 @@ def save_sensor_data(humidity, temperature, ph, sensor_p, sensor_k, irrigation_s
     cursor = connection.cursor()
     cursor.execute(
         """
-        INSERT INTO sensor_data (humidity, temperature, ph, sensor_p, sensor_k, irrigation_status)
+        INSERT INTO tbl_LEITURA (ltr_UMIDADE, ltr_TEMPERATURA, ltr_PH, ltr_NUTRIENTE_P, ltr_NUTRIENTE_K, ltr_STATUS_IRRIGACAO)
         VALUES (?, ?, ?, ?, ?, ?)
         """,
         (humidity, temperature, ph, sensor_p, sensor_k, irrigation_status),
@@ -45,14 +45,14 @@ def save_sensor_data(humidity, temperature, ph, sensor_p, sensor_k, irrigation_s
 
 def fetch_sensor_data():
     connection = connect()
-    query = "SELECT * FROM sensor_data ORDER BY created_at DESC"
+    query = "SELECT * FROM tbl_LEITURA ORDER BY ltr_DATA DESC"
     data = pandas.read_sql_query(query, connection)
 
     # Export the data to a CSV file
     data.to_csv(CSV_PATH, index=False)
 
-    data["created_at"] = pandas.to_datetime(data["created_at"])
-    data["month"] = data["created_at"].dt.to_period("M")  # Adiciona uma coluna de mês
+    data["ltr_DATA"] = pandas.to_datetime(data["ltr_DATA"])
+    data["month"] = data["ltr_DATA"].dt.to_period("M")  # Adiciona uma coluna de mês
     connection.close()
 
     return data
