@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SQL XML created by WWW SQL Designer, https://github.com/ondras/wwwsqldesigner/ -->
+<!-- Active URL: https://sql.toad.cz/ -->
+<sql>
+  <datatypes db="mysql">
+    <group label="Numeric" color="rgb(238,238,170)">
+      <type label="Integer" length="0" sql="INTEGER" quote="" />
+      <type label="INT" length="0" sql="INT" quote="" />
+      <type label="REAL" length="0" sql="REAL" quote="" />
+    </group>
+    <group label="Character" color="rgb(255,200,200)">
+      <type label="Text" length="0" sql="TEXT" quote="'" />
+    </group>
+    <group label="Date &amp; Time" color="rgb(200,255,200)">
+      <type label="Datetime" length="0" sql="DATETIME" quote="'" />
+      <type label="Timestamp" length="0" sql="TIMESTAMP" quote="'" />
+    </group>
+    <group label="Boolean" color="rgb(200,200,255)">
+      <type label="Boolean" length="0" sql="BOOLEAN" quote="" />
+    </group>
+  </datatypes>
+  <table x="81" y="87" name="tbl_LEITURA">
+    <row name="ID_LEITURA" null="0" autoincrement="1">
+      <datatype>INTEGER</datatype>
+      <default>NULL</default>
+    </row>
+    <row name="ltr_UMIDADE" null="0" autoincrement="0">
+      <datatype>REAL</datatype>
+      <default>NULL</default>
+    </row>
+    <row name="ltr_TEMPERATURA" null="0" autoincrement="0">
+      <datatype>REAL</datatype>
+      <default>NULL</default>
+    </row>
+    <row name="ltr_PH" null="0" autoincrement="0">
+      <datatype>REAL</datatype>
+      <default>NULL</default>
+    </row>
+    <row name="ltr_NUTRIENTE_P" null="0" autoincrement="0">
+      <datatype>BOOLEAN</datatype>
+      <default>0</default>
+    </row>
+    <row name="ltr_NUTRIENTE_K" null="0" autoincrement="0">
+      <datatype>BOOLEAN</datatype>
+      <default>0</default>
+    </row>
+    <row name="ltr_STATUS_IRRIGACAO" null="0" autoincrement="0">
+      <datatype>BOOLEAN</datatype>
+      <default>0</default>
+    </row>
+    <row name="ltr_DATA" null="1" autoincrement="0">
+      <datatype>TIMESTAMP</datatype>
+      <default>CURRENT_TIMESTAMP</default>
+    </row>
+  </table>
+</sql>

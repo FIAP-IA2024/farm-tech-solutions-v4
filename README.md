@@ -6,9 +6,10 @@
 
 <br>
 
-# Construindo uma máquina agrícola
+## Construindo uma máquina agrícola
 
-## 👨‍🎓 Integrantes do grupo 
+## 👨‍🎓 Integrantes do grupo
+
 - RM559800 - [Jonas Felipe dos Santos Lima](https://www.linkedin.com/in/jonas-felipe-dos-santos-lima-b2346811b/)
 - RM560173 - [Gabriel Ribeiro](https://www.linkedin.com/in/ribeirogab/)
 - RM559926 - [Marcos Trazzini](https://www.linkedin.com/in/mstrazzini/)
@@ -16,9 +17,13 @@
 - RM559645 - [Edimilson Ribeiro](https://www.linkedin.com/in/edimilson-ribeiro/)
 
 ## 👩‍🏫 Professores
+
 ### Tutor(a)
+
 - [Lucas Gomes Moreira](https://www.linkedin.com/in/lucas-gomes-moreira-15a8452a/)
+
 ### Coordenador(a)
+
 - [André Godoi](https://www.linkedin.com/in/profandregodoi/)
 
 ---
@@ -27,13 +32,15 @@
 
 Este projeto consiste na construção de uma máquina agrícola inteligente que utiliza sensores conectados a um microcontrolador ESP32 para monitorar e otimizar a irrigação de plantações. Ele combina sensoriamento, lógica de controle e integração com banco de dados para criar uma solução eficiente e sustentável para a gestão agrícola.
 
-### Funcionalidades principais:
+### Funcionalidades principais
+
 - Monitoramento de umidade do solo, pH e níveis de nutrientes (simulados).
 - Controle automatizado de uma bomba de irrigação com base nos dados dos sensores.
 - Armazenamento dos dados coletados em um banco de dados SQL.
 - Interface em Python para consulta e análise dos dados históricos.
 - Dashboard em Python para visualização dos dados coletados.
 - Integração com API meteorológica e análises em R.
+- Treinamento de modelos de Machine Learning (Random Forest) para prever a necessidade de irrigação com base nos dados dos sensores.
 
 ### Demonstração no YouTube
 
@@ -49,13 +56,21 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
   - `sketch.ino`: Código principal em C/C++ para controle dos sensores e do relé.
 
 - **`app`**: Código Python para interação com o banco de dados e visualização de dados:
-  - `database.py`: Scripts para realizar operações CRUD no banco de dados.
-  - `weather.py`: Código para integração com API meteorológica.
-  - `dashboard.py`: Dashboard para exibir os dados coletados.
+  - `main.py`: Arquivo principal que executa a aplicação Streamlit.
+  - `tabs/`: Diretório contendo as abas da interface do Streamlit.
+    - `sensor_data.py`: Aba para exibir dados dos sensores.
+    - `weather_info.py`: Aba para exibir informações meteorológicas.
+    - `machine_learning.py`: Aba para exibir e treinar o modelo de Machine Learning (`sklearn`).
+  - `utils/`: Funções utilitárias e módulos auxiliares.
+    - `database.py`: Funções para interagir com o banco de dados SQLite.
+    - `mqtt.py`: Quando executado, simula uma comunicação via MQTT.
+    - `openweathermap.py`: Funções para obter dados meteorológicos da API OpenWeatherMap.
   - `.env`: Variáveis de ambiente para configuração segura (Copie o conteúdo do arquivo `.env.example` e cole em um novo arquivo chamado `.env`).
 
 - **`database`**: Contém o script SQL de inicialização do banco:
   - `init.sql`: Script para criação automática da estrutura do banco de dados.
+  - `data-model.png`: Imagem da modelagem do banco de dados.
+  - `data-model.xml`: XML do SQL Designer (pode ser importado em <https://sql.toad.cz/>).
 
 - **`analysis`**: Arquivos para análises em R:
   - `analysis.r`: Script principal para análises estatísticas.
@@ -130,7 +145,7 @@ O dashboard é desenvolvido em **Streamlit**. Para executá-lo:
 1. Execute o comando para iniciar o dashboard:
 
    ```bash
-   streamlit run app/dashboard.py
+   streamlit run app/main.py
    ```
 
 2. Acesse o dashboard no navegador em:
@@ -159,6 +174,18 @@ A análise estatística está localizada no arquivo `analysis/analysis.r`. Para 
    ```bash
    Rscript ./analysis.r
    ```
+
+---
+
+### Executando o MQTT
+
+O arquivo **`mqtt.py`** simula a comunicação entre a aplicação Python e o microcontrolador. Ele publica eventos no **MQTT Broker** (usando o broker público `test.mosquitto.org`).
+
+**Para executar:**
+
+```bash
+python apps/utils/mqtt.py
+```
 
 ---
 
