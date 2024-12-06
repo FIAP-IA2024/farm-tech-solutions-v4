@@ -44,7 +44,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 
 ### Demonstração no YouTube
 
-[![Assista no YouTube](https://img.youtube.com/vi/CJya8gYVt6g/0.jpg)](https://www.youtube.com/watch?v=CJya8gYVt6g)
+[![Assista no YouTube](https://img.youtube.com/vi/CJya8gYVt6g/0.jpg)](https://youtu.be/cEPflbUoNao)
 
 ---
 
