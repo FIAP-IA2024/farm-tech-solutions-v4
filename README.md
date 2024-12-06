@@ -51,11 +51,13 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 ## 📁 Estrutura de pastas
 
 - **`esp32`**: Contém o código e os recursos utilizados no microcontrolador ESP32:
+
   - `libraries.txt`: Lista de bibliotecas necessárias.
   - `diagram.json`: Diagrama do circuito configurado no **Wokwi**.
   - `sketch.ino`: Código principal em C/C++ para controle dos sensores e do relé.
 
 - **`app`**: Código Python para interação com o banco de dados e visualização de dados:
+
   - `main.py`: Arquivo principal que executa a aplicação Streamlit.
   - `tabs/`: Diretório contendo as abas da interface do Streamlit.
     - `sensor_data.py`: Aba para exibir dados dos sensores.
@@ -68,6 +70,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
   - `.env`: Variáveis de ambiente para configuração segura (Copie o conteúdo do arquivo `.env.example` e cole em um novo arquivo chamado `.env`).
 
 - **`database`**: Contém o script SQL de inicialização do banco:
+
   - `init.sql`: Script para criação automática da estrutura do banco de dados.
   - `data-model.png`: Imagem da modelagem do banco de dados.
   - `data-model.xml`: XML do SQL Designer (pode ser importado em <https://sql.toad.cz/>).
@@ -90,6 +93,7 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
    ```
 
 2. Crie e ative um ambiente virtual Python:
+
    - **Linux/macOS:**
 
      ```bash
@@ -134,7 +138,33 @@ Este projeto consiste na construção de uma máquina agrícola inteligente que 
 
 Acesse o projeto diretamente no Wokwi clicando no link abaixo:
 
-[🔗 Link Público Wokwi](https://wokwi.com/projects/414485053351612417)
+[🔗 Link Público Wokwi](https://wokwi.com/projects/416430516747031553)
+
+#### SERIAL PLOTTER - Análise das variáveis
+
+1. Primeira Alteração nos Parâmetros (pH, Temperatura e Umidade)
+   Foram realizadas alterações nos seguintes parâmetros:
+
+Temperatura: Ajustada para 35,8 °C, representada pela linha verde.
+Umidade: Configurada para 37%, ilustrada pela linha laranja.
+pH: Alterado para 11,16, representado pela linha roxa.
+Até este ponto, não houve alterações nos sensores de fósforo (P) e potássio (K), e a irrigação ainda não foi ativada.
+![alt text](image.png)
+
+2. Alteração nos Sensores P e K e Início da Irrigação
+   Com a ativação dos sensores P e K, simulados por botões e indicados pelos LEDs azul e amarelo, a irrigação foi iniciada.
+
+No monitor plotter, isso é observado por:
+Alterações sutis nas linhas brancas, azul e amarela, localizadas na parte inferior do gráfico.
+Mudança no status da irrigação para "1" na tabela de índice.
+![alt text](image-1.png)
+
+3. Desativação Automática da Irrigação
+   Após o tempo calculado com base nos parâmetros dos sensores, a irrigação foi desativada automaticamente.
+
+No monitor plotter, a desativação é visível pelo decaimento das linhas brancas na parte inferior do gráfico, que representam
+o estado da irrigação e o tempo restante.
+![alt text](image-2.png)
 
 ---
 
@@ -161,6 +191,7 @@ O dashboard é desenvolvido em **Streamlit**. Para executá-lo:
 A análise estatística está localizada no arquivo `analysis/analysis.r`. Para executá-la:
 
 1. Certifique-se de ter o **R** e o ambiente configurado:
+
    - Utilize o arquivo `renv.lock` e a pasta `renv` para reprodutibilidade.
 
 2. Navegue até o diretório `analysis`:
@@ -192,6 +223,7 @@ python apps/utils/mqtt.py
 ## 💻 Tecnologias utilizadas
 
 - **Hardware:**
+
   - ESP32 (microcontrolador)
   - Sensores DHT22, LDR e botões para simulação de nutrientes.
   - **Wokwi**: Plataforma de simulação de hardware utilizada para configurar o circuito.
